@@ -5,6 +5,16 @@
     color: white;
 }
 
+.navbar-header a, .navbar-nav a {
+    color: darkred !important;
+    font-weight: bold;
+}
+
+.navbar-header a:hover, .navbar-nav a:hover {
+    color: whitesmoke !important;
+    font-weight: bold;
+}
+
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
