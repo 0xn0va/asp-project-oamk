@@ -16,7 +16,6 @@ namespace asp_project_oamk.Controllers
     {
         private IMDBContext db = new IMDBContext();
 
-        // GET: Movies
         public ActionResult Index()
         {
             
@@ -31,7 +30,6 @@ namespace asp_project_oamk.Controllers
             return View(movielst);
         }
 
-        // GET: Movies/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -46,7 +44,6 @@ namespace asp_project_oamk.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Create
         public ActionResult Create()
         {
 
@@ -54,8 +51,7 @@ namespace asp_project_oamk.Controllers
 
 
             var actor= db.Actors.ToList();
-            //string[] sarr = new string[100];
-            //List<string> strlst = new List<string>();
+
             string str = "";
 
             foreach (var sc in actor)
@@ -64,8 +60,7 @@ namespace asp_project_oamk.Controllers
             }
 
             Movie newmv = new Movie();
-            //movievm.SelectedItemIds = str.Split(',');
-            //businessEntity.SelectedItemIds = new[] { "1", "3" };
+  
             movievm.Items = db.Actors.Select(x => new SelectListItem
             {
                 Value = x.ActorId.ToString(),
@@ -77,20 +72,17 @@ namespace asp_project_oamk.Controllers
             return View(movievm);
         }
 
-        // POST: Movies/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "MovieId,Name,Yor,Poster")] Movie movie, int ProducerId, string [] SelectedActorIds)
         {
 
-            var idforimagename = 1;  //Image name is same as Movie Id like 1.jpg , 2.jpg etc
+            var idforimagename = 1; 
             try
             {
                 try
                 {
-                    //Approch 3
                     var lst = db.Movies;
                     if (lst.Any())
                     {
@@ -106,10 +98,9 @@ namespace asp_project_oamk.Controllers
                     return View(movie);
                 }
                 var str = poster.FileName.Substring(poster.FileName.LastIndexOf('.'));
-                //This line is important , verify it saved the image to respetive directorty or not
                 poster.SaveAs(Server.MapPath("~/") + @"Images/Movies/" + idforimagename + str);
                 movie.Poster = "../../Images/Movies/" + idforimagename + str;
-                movie.ProducerId = ProducerId; // or movie.producer=producer
+                movie.ProducerId = ProducerId; 
             }
             catch (Exception e)
             {
@@ -119,9 +110,9 @@ namespace asp_project_oamk.Controllers
             if (ModelState.IsValid)
             {
                 db.Movies.Add(movie);
-                db.SaveChanges(); //After Movie is saved , Now Fill the table ActorMovie
+                db.SaveChanges();
 
-                int mvid = movie.MovieId; //Get the Id of latest saved movie so that you can associate it with Actor (AcotrId , MovieId)
+                int mvid = movie.MovieId; 
                 List<int> selectedactor = new List<int>();
 
                 foreach (var sc in SelectedActorIds)
@@ -137,7 +128,6 @@ namespace asp_project_oamk.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Edit/5
         public ActionResult Edit(int? id)
         {
 
@@ -181,9 +171,7 @@ namespace asp_project_oamk.Controllers
             return View(movievm);
         }
 
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "MovieId,Name,Yor,Poster")] Movie movie , int ProducerId, string[] SelectedActorIds)
@@ -191,7 +179,6 @@ namespace asp_project_oamk.Controllers
 
 
 
-            //Changing the actors while editing 
             var existingactor = db.Database.SqlQuery<QueryResult>("SELECT * FROM ActorMovie").Where(x => x.intMovieid == movie.MovieId).ToList();
             List<int> viewselectedactor = new List<int>();
 
@@ -207,15 +194,10 @@ namespace asp_project_oamk.Controllers
             int[] addactorLst = viewselectedlist1.Except(lstTableItems).ToArray();
             int[] removeactorLst = lstTableItems.Except(viewselectedlist1.Except(addactorLst)).ToArray();
 
-            //Adding New Actors which user has selected while editing 
             AddSeletedActors(addactorLst, movie.MovieId);
 
-            //Removing the actors which user has dselected 
             RemoveDeselectedActors(removeactorLst, movie.MovieId);
-           
 
-
-            //Check if Poster is null in movie but present in database , means user havent change the image. 
             if (movie.Poster == null)
             {
                 var mv = db.Movies.Find(movie.MovieId);
@@ -224,7 +206,7 @@ namespace asp_project_oamk.Controllers
             }
             else
             {
-                var idforimagename = 1;  //Image name is same as Movie Id like 1.jpg , 2.jpg etc
+                var idforimagename = 1; 
                 try
                 {
                     try
@@ -342,7 +324,6 @@ namespace asp_project_oamk.Controllers
             
         }
 
-        // GET: Movies/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -357,7 +338,6 @@ namespace asp_project_oamk.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -365,14 +345,11 @@ namespace asp_project_oamk.Controllers
             Movie movie = db.Movies.Find(id);
 
             
-            //Delete the file from the physical location i.e. Images/Movies
             String imgpath = movie.Poster.Substring(5);
             String fullpath = Server.MapPath("~/") + imgpath;
             if (System.IO.File.Exists(fullpath))
             {
-                // Use a try block to catch IOExceptions, to
-                // handle the case of the file already being
-                // opened by another process.
+
                 try
                 {
                     System.IO.File.Delete(fullpath);
@@ -380,7 +357,6 @@ namespace asp_project_oamk.Controllers
                 catch (System.IO.IOException e)
                 {
                     Console.WriteLine(e.Message);
-                    //return;
                 }
             }
 

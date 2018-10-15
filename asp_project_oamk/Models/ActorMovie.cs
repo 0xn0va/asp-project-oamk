@@ -7,7 +7,7 @@ using System.Web;
 
 namespace asp_project_oamk.Models
 {
-    //[Table("ActorMovie")]
+
     public class ActorMovie
     {
         [Column("intActorId", Order = 0)]

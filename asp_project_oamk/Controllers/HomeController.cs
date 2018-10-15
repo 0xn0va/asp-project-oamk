@@ -11,18 +11,7 @@ namespace asp_project_oamk.Controllers
     {
         public ActionResult Index()
         {
-            //IMDBContext db = new IMDBContext();
-            //var s = db.Actors.ToList();
 
-            //var producer = db.Producers
-            //                .Include("Movies").ToList();
-
-            //var m = db.Movies
-            //        .Include("Actors").ToList();
-            //foreach (var j in m)
-            //{
-            //    var p = j.Actors;
-            //}
             return View();
         }
 
