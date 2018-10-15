@@ -17,14 +17,14 @@ namespace asp_project_oamk.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Our awesome team consists of:";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "You can reach us at:";
 
             return View();
         }
